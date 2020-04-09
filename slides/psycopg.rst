@@ -7,7 +7,7 @@
 
 .. class:: text-right
 
-    Brighton PostgreSQL Meetup, ``'2016-10-14'::date``
+    Boulder Linux Users Group, ``'2020-04-09'::date``
 
     Daniele Varrazzo
 
@@ -427,7 +427,7 @@ Using gevent__, gevent-websocket__, psycogreen__
 
 .. class:: text-right
 
-    Demo code at https://github.com/dvarrazzo/psycopg-brighton-2016
+    Demo code at https://github.com/dvarrazzo/psycopg-boulder-2020
 
 ----
 

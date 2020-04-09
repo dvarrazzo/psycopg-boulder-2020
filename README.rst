@@ -1,7 +1,7 @@
-Psycopg slideshow at Brighton PostgreSQL Meetup, October 2016
-=============================================================
+Psycopg slideshow at Boulder Linux Users Group, April 2020
+==========================================================
 
-An experiment using Landslide__ to produce an `HTML5 slideshow`__.
+Using Landslide__ to produce an `HTML5 slideshow`__.
 
 .. __: https://github.com/adamzap/landslide
 .. __: https://code.google.com/p/html5slides/
@@ -24,11 +24,10 @@ build the entire environment with::
 Run the ``pushdemo.py`` script with a connection string as first argument
 (hint: quote it)::
 
-    python slides/pushdemo.py "user=postgres dbname=test"
+    python3 pushdemo.py "user=postgres dbname=test"
 
 Display the html slideshow.  At the demo page, connect to the same database
 using psql and execute something like::
 
     NOTIFY data, 'blue';
     NOTIFY data, 'red';
-
