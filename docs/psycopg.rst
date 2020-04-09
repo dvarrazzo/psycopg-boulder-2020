@@ -47,7 +47,7 @@ Psycopg!
 --------
 
 * Yeah, maybe questionable name too. 🤔
-* But now we are sort of like it. 🤭
+* But now we sort of like it. 🤭
 
 ``psycopg2``
 ------------
