@@ -1,0 +1,9 @@
+We will have an interacting presentation showing the interaction between
+Python and PostgreSQL using psycopg2, the most used Postgres database driver
+for Python.
+
+We will touch basic topics: the basic Python objects, interaction with a
+database session, data adaptation, security by avoiding SQL injections.
+
+The speaker is Daniele Varrazzo: free software developer, Python and
+PostgreSQL enthusiast, psycopg2 maintainer.
