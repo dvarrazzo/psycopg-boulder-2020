@@ -3,6 +3,7 @@
 =========================================
 
 .. image:: img/psycopg.png
+    :height: 30em
 
 
 .. class:: text-right
@@ -11,6 +12,7 @@
 
     Daniele Varrazzo
 
+    `slides source <https://github.com/dvarrazzo/psycopg-boulder-2020/>`__
 ..
     Note to piro: you want
     :autocmd BufWritePost psycopg.rst :silent !make html

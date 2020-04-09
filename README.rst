@@ -1,18 +1,19 @@
 Psycopg slideshow at Boulder Linux Users Group, April 2020
 ==========================================================
 
-Using Landslide__ to produce an `HTML5 slideshow`__.
+You can see these slides at https://www.varrazzo.com/psycopg-boulder-2020/.
 
-.. __: https://github.com/adamzap/landslide
+An `HTML5 slideshow`__ made with Landslide__.
+
 .. __: https://code.google.com/p/html5slides/
+.. __: https://github.com/adamzap/landslide
 
 Usage
 -----
 
-In order to render the slideshow, just install Landslide and::
+In order to render the slideshow, just ``pip install landslide`` and::
 
-    cd slides
-    make html
+    make
 
 The slideshow has an interactive part with more complex requirements: you can
 build the entire environment with::
@@ -22,7 +23,7 @@ build the entire environment with::
     pip install -r requirements.txt
 
 Run the ``pushdemo.py`` script with a connection string as first argument
-(hint: quote it)::
+(hint: quote it), e.g. ::
 
     python3 pushdemo.py "user=postgres dbname=test"
 
