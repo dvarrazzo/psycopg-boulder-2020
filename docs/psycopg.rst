@@ -20,12 +20,51 @@
 ----
 
 
-Assumptions
-===========
+What are we talking about?
+==========================
 
-* You know some Python
-* You know some PostgreSQL
-* You want to do something with the two
+* There is this language, Python 🐍
+
+  * it's got all its types (strongly typed, dynamically typed)
+
+* and this database, PostgreSQL 🐘
+
+  * yeah, not a great name. Let's call it Postgres
+  * it's got a lot of different types too
+
+* You want to do something with the two 🐍↔️🐘
+
+  * they are both very extendible
+  * someone should map the two together
+
+----
+
+
+Mapping the two together
+========================
+
+Psycopg!
+--------
+
+* Yeah, maybe questionable name too. 🤔
+* But now we are sort of like it. 🤭
+
+``psycopg2``
+------------
+
+.. role:: html(raw)
+    :format: html
+
+* Current mature adapter: in production for about 15 years 👴
+* https://www.psycopg.org/
+
+
+
+``psycopg3``
+------------
+
+* Development recently started. Exciting! 👶
+* https://www.varrazzo.com/blog/2020/03/06/thinking-psycopg3/
 
 
 ----
@@ -60,44 +99,10 @@ Different ways to consume data
 
 ----
 
-Returning data
-==============
-
-
-.. code-block:: python
-
-    # Normal cursor, returning tuple, separate description
-    In [5]: cur.execute("select 10 as a, 'foo' as b")
-    In [6]: cur.fetchone()
-    Out[6]: (10, 'foo')
-
-    In [7]: cur.description
-    Out[7]:
-    (Column(name='a', type_code=23, display_size=None, internal_size=4,
-            precision=None, scale=None, null_ok=None),
-     Column(name='b', type_code=705, display_size=None, internal_size=-2,
-            precision=None, scale=None, null_ok=None))
-
-    # Other subclasses: a cursor returning a dict
-    In [8]: import psycopg2.extras
-    In [9]: cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    In [10]: cur.execute("select 10 as a, 'foo' as b")
-    In [11]: cur.fetchone()
-    Out[11]: {'a': 10, 'b': 'foo'}
-
-    # ...or a named tuple
-    In [12]: cur = conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
-    In [13]: cur.execute("select 10 as a, 'foo' as b")
-    In [14]: cur.fetchone()
-    Out[14]: Record(a=10, b='foo')
-
-
-----
-
 Data type mapping
 =================
 
-Default data types mapping: no surprise here
+Default data types mapping
 
 .. table::
     :class: data-types
@@ -130,67 +135,11 @@ Default data types mapping: no surprise here
     +--------------------+-------------------------+
     | ``timedelta``      | ``interval``            |
     +--------------------+-------------------------+
+    | and many more...                             |
+    +--------------------+-------------------------+
 
 
 ----
-
-More Data!
-==========
-
-- ``list`` <-> ``ARRAY``
-
-  .. code-block:: python
-
-    >>> cur.execute("""select array_agg(d)::date[]
-        from generate_series('2013-07-11'::date, '2013-07-12'::date,
-            '1 day'::interval) s(d)""")
-    # [datetime.date(2013, 7, 11), datetime.date(2013, 7, 12)]
-
-- [``named``] ``tuple`` <-> composite
-
-  .. code-block:: python
-
-    >>> cur.execute("CREATE TYPE card AS (value int, suit text)")
-    >>> psycopg2.extras.register_composite('card', cur)
-    >>> cur.execute("select (8, 'hearts')::card")
-    # card(value=8, suit='hearts')
-
-- ``dict`` of ``str`` <-> ``hstore``
-
-  .. code-block:: python
-
-    >>> psycopg2.extras.register_hstore(cur)
-    >>> cur.execute("select 'a => foo, b => NULL'::hstore")
-    # {'a': 'foo', 'b': None}
-
-----
-
-
-Even More Data!
-===============
-
-- Psycopg's ``Range`` <-> ``range``
-
-  .. code-block:: python
-
-    >>> cur.execute("select '[0,10)'::int8range")
-    # NumericRange(0, 10, '[)')
-    >>> r.upper_inc, r.lower_inc
-    (False, True)
-
-  - Builtin range types supported out-of-the-box
-  - New range type supported by ``psycopg2.extras.register_range()``
-
-- Anything™ <-> ``json``, ``jsonb``
-
-  .. code-block:: python
-
-    >>> cur.execute("insert into mytable (jsondata) values (%s)",
-        [Json({'a': 100})])
-
-
-----
-
 
 Typecasting
 ===========
@@ -234,28 +183,6 @@ Customizing a typecaster
 
 ----
 
-Typecasting
-===========
-
-.. image:: img/pg-to-py.png
-
-Easy array typecaster
-
-.. code-block:: pycon
-
-    >>> cur.execute("select '{1,2,3,4,5}'::numeric[]")
-    >>> cur.fetchone()
-    ([Decimal('1'), Decimal('2'), Decimal('3'), Decimal('4'), Decimal('5')],)
-
-    >>> ta = ext.new_array_type((1231,), 'NUM2FLOAT[]', t)
-    >>> ext.register_type(ta, cur)
-
-    >>> cur.execute("select '{1,2,3,4,5}'::numeric[]")
-    >>> cur.fetchone()
-    ([1.0, 2.0, 3.0, 4.0, 5.0],)
-
-
-----
 
 Adaptation
 ==========
@@ -284,8 +211,8 @@ Adaptation
 ----
 
 
-Adaptation
-==========
+Adaptation risk
+===============
 
 .. code-block:: pycon
 
@@ -299,79 +226,27 @@ Funny, but wrong conclusion:
 
     >>> cur.execute("insert into students (name) values (%s)" , [name])
 
-Look ma: no *saniti(s|z)ing database input* here!
-
-----
-
-
-CustomiZZing Adaptation
-=======================
-
-.. image:: img/py-to-pg.png
-
-- Based on Python class
-
-- Using adapter function
-
-.. code-block:: pycon
-
-    >>> class Mac(object):
-    ...     def __init__(self, *args):
-    ...         if len(args) != 6:
-    ...             raise ValueError('need 6 args')
-    ...         self.args = args
-    ...
-    ...     def __str__(self):
-    ...         return ':'.join(map(str, self.args))
-
-    >>> print Mac(10,20,30,40,50,60)
-    10:20:30:40:50:60
-
-----
-
-CustomiXing adaptation
-======================
-
-.. image:: img/py-to-pg.png
-
-- Based on Python class
-
-- Using adapter function
-
-.. code-block:: pycon
-
-    >>> class MacAdapter(object):
-    ...     def __init__(self, obj):
-    ...         self.obj = obj
-    ...     def getquoted(self):
-    ...         return "'%s'::macaddr" % str(self.obj)
-
-    >>> ext.register_adapter(Mac, MacAdapter)
-
-    >>> m = Mac(10,20,30,40,50,60)
-    >>> cur.execute("insert into macs (mac) values (%s)", [m])
+Look ma: no *sanitizing database input* here!
 
 
 ----
 
+New architecture in psycopg3
+============================
 
-The other side too
-==================
+* Adapters -> Dumpers
+* Typecasters -> Loaders
+* Transform lifetime tied to the query
 
-.. image:: img/pg-to-py.png
+  * more performance
 
 .. code-block:: pycon
 
-    >>> def cast_mac(s, cur):
-    ...     if s is not None:
-    ...         return Mac(*s.split(':'))
+    >>> Dumper.register(MyType, DumperSubclass)
+    >>> Dumper.register(MyType, dump_function)
 
-    >>> MAC = ext.new_type((829,), 'MAC', cast_mac)
-    >>> ext.register_type(MAC, cur)
-
-    >>> cur.execute("select * from macs")
-    >>> print cur.fetchone()[1]
-    10:20:30:40:50:60
+    >>> Loader.register(my_oid, LoaderSubclass)
+    >>> Loader.register(my_oid, load_function)
 
 
 ----
@@ -396,7 +271,7 @@ Using gevent__, gevent-websocket__, psycogreen__
 
 .. class:: apology
 
-    This demo requires the ``pushdemo.py`` script running.
+    **Note:** this demo requires the ``pushdemo.py`` script running.
 
 .. raw:: html
 
