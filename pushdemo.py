@@ -19,7 +19,7 @@ import psycopg2
 from psycogreen.gevent import patch_psycopg
 patch_psycopg()
 
-dsn = "dbname=test"  # customise this or pass a dsn to the script
+dsn = ""  # customise this or pass a dsn to the script
 
 if len(sys.argv) > 1:
     dsn = sys.argv[1]
@@ -75,6 +75,7 @@ def handle_client(ws):
 def app(environ, start_response):
     if environ['PATH_INFO'] == "/data":
         handle_client(environ['wsgi.websocket'])
+        return []
     elif environ['PATH_INFO'] == "/":
         start_response('200 OK', [('Content-Type', 'text/html')])
         return [page]

@@ -65,6 +65,7 @@ Psycopg!
 
 * Development recently started. Exciting! 👶
 * https://www.varrazzo.com/blog/2020/03/06/thinking-psycopg3/
+* Please `support the project <https://github.com/sponsors/dvarrazzo/>`__ 💜
 
 
 ----
@@ -271,7 +272,7 @@ Using gevent__, gevent-websocket__, psycogreen__
 
 .. class:: apology
 
-    **Note:** this demo requires the ``pushdemo.py`` script running.
+    **Note:** the ``pushdemo.py`` script is not running.
 
 .. raw:: html
 
@@ -304,7 +305,8 @@ Using gevent__, gevent-websocket__, psycogreen__
 
 .. class:: text-right
 
-    Demo code at https://github.com/dvarrazzo/psycopg-boulder-2020
+    Download the `demo code
+    <https://github.com/dvarrazzo/psycopg-boulder-2020>`__
 
 ----
 
