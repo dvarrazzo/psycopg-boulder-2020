@@ -41,7 +41,7 @@ def listen_db():
         conn.poll()
         while conn.notifies:
             n = conn.notifies.pop()
-            print "received notify:", n
+            print("received notify:", n)
             for q in queues:
                 q.put(n)
 
@@ -57,7 +57,7 @@ def watcher(ws, q):
 
 def handle_client(ws):
     q = Queue()
-    print "queue added:", id(q)
+    print("queue added:", id(q))
     queues.add(q)
     gevent.spawn(watcher, ws, q)
 
@@ -68,7 +68,7 @@ def handle_client(ws):
                 break
             ws.send(n.payload)
     finally:
-        print "queue removed:", id(q)
+        print("queue removed:", id(q))
         queues.remove(q)
 
 
@@ -79,7 +79,7 @@ def app(environ, start_response):
         start_response('200 OK', [('Content-Type', 'text/html')])
         return [page]
     else:
-        print "404, PATH_INFO: %s" % environ["PATH_INFO"]
+        print("404, PATH_INFO: %s" % environ["PATH_INFO"])
         start_response("404 Not Found", [])
         return []
 
