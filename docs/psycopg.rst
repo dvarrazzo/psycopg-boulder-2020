@@ -314,7 +314,7 @@ Questions
 
 * **Q**: my database is SQL_ASCII and now it's a jumble of different encodings which don't make sense, but we are scraper guys so we have to
 
-  **A**: ``psycopg3`` allows you to use SQL_ASCII database as a binary database, encoding-agnostic
+  **A**: ``psycopg3`` allows you to use SQL_ASCII databases as a binary databases, encoding-agnostic
 
 * **Q**: ... **A**: You should really `sponsor psycopg3 <https://github.com/sponsors/dvarrazzo/>`__! 💜
 
