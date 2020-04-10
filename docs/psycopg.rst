@@ -312,7 +312,7 @@ Questions
 
   **A**: ``psycopg3`` uses a different mechanism than adaptation and is much more performing with less objects created
 
-* **Q**: my database is SQL_ASCII and now it's a jumble of different encoding which don't make sense, but we are scraper guys so we have to
+* **Q**: my database is SQL_ASCII and now it's a jumble of different encodings which don't make sense, but we are scraper guys so we have to
 
   **A**: ``psycopg3`` allows you to use SQL_ASCII database as a binary database, encoding-agnostic
 
