@@ -81,7 +81,7 @@
             </aside>
             
             <aside class="page_number">
-              1/13
+              1/14
             </aside>
           </footer>
         </div>
@@ -126,7 +126,7 @@
             </aside>
             
             <aside class="page_number">
-              2/13
+              2/14
             </aside>
           </footer>
         </div>
@@ -175,7 +175,7 @@
             </aside>
             
             <aside class="page_number">
-              3/13
+              3/14
             </aside>
           </footer>
         </div>
@@ -220,7 +220,7 @@
             </aside>
             
             <aside class="page_number">
-              4/13
+              4/14
             </aside>
           </footer>
         </div>
@@ -302,7 +302,7 @@
             </aside>
             
             <aside class="page_number">
-              5/13
+              5/14
             </aside>
           </footer>
         </div>
@@ -338,7 +338,7 @@
             </aside>
             
             <aside class="page_number">
-              6/13
+              6/14
             </aside>
           </footer>
         </div>
@@ -386,7 +386,7 @@
             </aside>
             
             <aside class="page_number">
-              7/13
+              7/14
             </aside>
           </footer>
         </div>
@@ -432,7 +432,7 @@
             </aside>
             
             <aside class="page_number">
-              8/13
+              8/14
             </aside>
           </footer>
         </div>
@@ -452,7 +452,10 @@
 <p>Funny, but wrong conclusion:</p>
 <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into students (name) values (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="p">,</span> <span class="p">[</span><span class="n">name</span><span class="p">])</span>
 </pre>
-<p>Look ma: no <em>sanitizing database input</em> here!</p></section>
+<ul class="simple">
+<li>Look ma: no <em>sanitizing database input</em> here!</li>
+<li>(You must not do it, we do it for you)</li>
+</ul></section>
             
           </div>
           <div class="presenter_notes">
@@ -468,50 +471,7 @@
             </aside>
             
             <aside class="page_number">
-              9/13
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: psycopg.rst -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            
-            <header><h1>New architecture in psycopg3</h1></header>
-            
-            
-            <section><ul class="simple">
-<li>Adapters -&gt; Dumpers</li>
-<li>Typecasters -&gt; Loaders</li>
-<li>Transform lifetime tied to the query<ul>
-<li>more performance</li>
-</ul>
-</li>
-</ul>
-<pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Dumper</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyType</span><span class="p">,</span> <span class="n">DumperSubclass</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Dumper</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyType</span><span class="p">,</span> <span class="n">dump_function</span><span class="p">)</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Loader</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">my_oid</span><span class="p">,</span> <span class="n">LoaderSubclass</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Loader</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">my_oid</span><span class="p">,</span> <span class="n">load_function</span><span class="p">)</span>
-</pre></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="psycopg.rst">psycopg.rst</a>
-            </aside>
-            
-            <aside class="page_number">
-              10/13
+              9/14
             </aside>
           </footer>
         </div>
@@ -541,7 +501,7 @@
             </aside>
             
             <aside class="page_number">
-              11/13
+              10/14
             </aside>
           </footer>
         </div>
@@ -598,7 +558,7 @@
             </aside>
             
             <aside class="page_number">
-              12/13
+              11/14
             </aside>
           </footer>
         </div>
@@ -628,7 +588,77 @@
             </aside>
             
             <aside class="page_number">
-              13/13
+              12/14
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Questions</h1></header>
+            
+            
+            <section><ul>
+<li><p class="first"><strong>Q</strong>: how can I install psycopg without needing a C compiler, install packages, etc?</p>
+<p><strong>A</strong>: <tt class="docutils literal">psycopg3</tt> has only an optional C package and it's otherwise pure Python</p>
+</li>
+<li><p class="first"><strong>Q</strong>: adaptation is kinda slow on my 1M entries array</p>
+<p><strong>A</strong>: <tt class="docutils literal">psycopg3</tt> uses a different mechanism than adaptation and is much more performing with less objects created</p>
+</li>
+<li><p class="first"><strong>Q</strong>: my database is SQL_ASCII and now it's a jumble of different encoding which don't make sense, but we are scraper guys so we have to</p>
+<p><strong>A</strong>: <tt class="docutils literal">psycopg3</tt> allows you to use SQL_ASCII database as a binary database, encoding-agnostic</p>
+</li>
+<li><p class="first"><strong>Q</strong>: ... <strong>A</strong>: You should really <a class="reference external" href="https://github.com/sponsors/dvarrazzo/">sponsor psycopg3</a>! 💜</p>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/14
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: psycopg.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>More questions?</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="psycopg.rst">psycopg.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/14
             </aside>
           </footer>
         </div>
@@ -697,26 +727,32 @@
       
       
       <tr id="toc-row-10">
-        <th><a href="#slide10">New architecture in psycopg3</a></th>
+        <th><a href="#slide10"><tt class="docutils literal">pushdemo.py</tt> architecture</a></th>
         <td><a href="#slide10">10</a></td>
       </tr>
       
       
       <tr id="toc-row-11">
-        <th><a href="#slide11"><tt class="docutils literal">pushdemo.py</tt> architecture</a></th>
+        <th><a href="#slide11">Async notification demo</a></th>
         <td><a href="#slide11">11</a></td>
       </tr>
       
       
       <tr id="toc-row-12">
-        <th><a href="#slide12">Async notification demo</a></th>
+        <th><a href="#slide12">Async notification demo (offline)</a></th>
         <td><a href="#slide12">12</a></td>
       </tr>
       
       
       <tr id="toc-row-13">
-        <th><a href="#slide13">Async notification demo (offline)</a></th>
+        <th><a href="#slide13">Questions</a></th>
         <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">More questions?</a></th>
+        <td><a href="#slide14">14</a></td>
       </tr>
       
       

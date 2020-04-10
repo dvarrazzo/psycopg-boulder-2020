@@ -227,27 +227,9 @@ Funny, but wrong conclusion:
 
     >>> cur.execute("insert into students (name) values (%s)" , [name])
 
-Look ma: no *sanitizing database input* here!
+* Look ma: no *sanitizing database input* here!
 
-
-----
-
-New architecture in psycopg3
-============================
-
-* Adapters -> Dumpers
-* Typecasters -> Loaders
-* Transform lifetime tied to the query
-
-  * more performance
-
-.. code-block:: pycon
-
-    >>> Dumper.register(MyType, DumperSubclass)
-    >>> Dumper.register(MyType, dump_function)
-
-    >>> Loader.register(my_oid, LoaderSubclass)
-    >>> Loader.register(my_oid, load_function)
+* (You must not do it, we do it for you)
 
 
 ----
@@ -315,3 +297,29 @@ Async notification demo (offline)
 =================================
 
 .. image:: img/pushdemo.png
+
+
+----
+
+Questions
+=========
+
+* **Q**: how can I install psycopg without needing a C compiler, install packages, etc?
+
+  **A**: ``psycopg3`` has only an optional C package and it's otherwise pure Python
+
+* **Q**: adaptation is kinda slow on my 1M entries array
+
+  **A**: ``psycopg3`` uses a different mechanism than adaptation and is much more performing with less objects created
+
+* **Q**: my database is SQL_ASCII and now it's a jumble of different encoding which don't make sense, but we are scraper guys so we have to
+
+  **A**: ``psycopg3`` allows you to use SQL_ASCII database as a binary database, encoding-agnostic
+
+* **Q**: ... **A**: You should really `sponsor psycopg3 <https://github.com/sponsors/dvarrazzo/>`__! 💜
+
+
+----
+
+More questions?
+===============
